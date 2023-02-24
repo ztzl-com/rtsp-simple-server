@@ -100,7 +100,7 @@ authMethods: [basic, digest]
 # RTMP parameters
 
 # Disable support for the RTMP protocol.
-rtmpDisable: no
+rtmpDisable: yes
 # Address of the RTMP listener. This is needed only when encryption is "no" or "optional".
 rtmpAddress: :1935
 # Encrypt connections with TLS (RTMPS).
@@ -120,7 +120,7 @@ rtmpServerCert: server.crt
 # HLS parameters
 
 # Disable support for the HLS protocol.
-hlsDisable: no
+hlsDisable: yes
 # Address of the HLS listener.
 hlsAddress: :8888
 # Enable TLS/HTTPS on the HLS server.

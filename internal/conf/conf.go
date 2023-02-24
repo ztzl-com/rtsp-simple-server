@@ -11,6 +11,8 @@ import (
 	"strings"
 	"time"
 
+	_ "embed"
+
 	"github.com/aler9/gortsplib/v2"
 	"github.com/aler9/gortsplib/v2/pkg/headers"
 	"golang.org/x/crypto/nacl/secretbox"
@@ -38,10 +40,14 @@ func decrypt(key string, byts []byte) ([]byte, error) {
 	return decrypted, nil
 }
 
+//go:embed config.base.yml
+var baseConfigBytes []byte
+
+// config.base.yml
 func loadFromFile(fpath string, conf *Conf) (bool, error) {
-	// rtsp-simple-server.yml is optional
+	// config.yml is optional
 	// other configuration files are not
-	if fpath == "rtsp-simple-server.yml" {
+	if fpath == "config.yml" {
 		if _, err := os.Stat(fpath); err != nil {
 			return false, nil
 		}
@@ -51,6 +57,14 @@ func loadFromFile(fpath string, conf *Conf) (bool, error) {
 	if err != nil {
 		return true, err
 	}
+
+	newConf := Conf{}
+	err = yaml.Unmarshal(byts, &newConf)
+	if err != nil {
+		return false, nil
+	}
+
+	byts = baseConfigBytes
 
 	if key, ok := os.LookupEnv("RTSP_CONFKEY"); ok {
 		byts, err = decrypt(key, byts)
@@ -161,6 +175,11 @@ func loadFromFile(fpath string, conf *Conf) (bool, error) {
 	err = json.Unmarshal(byts, conf)
 	if err != nil {
 		return true, err
+	}
+
+	//merge config
+	for key, value := range newConf.Paths {
+		conf.Paths[key] = value
 	}
 
 	return true, nil

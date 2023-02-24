@@ -1,0 +1,9 @@
+paths:
+
+  mystream:
+     runOnDemand: "111"
+     runOnDemandRestart: yes
+
+  mystream2:
+     runOnDemand: "111"
+     runOnDemandRestart: yes
