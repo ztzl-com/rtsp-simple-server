@@ -40,7 +40,7 @@ func decrypt(key string, byts []byte) ([]byte, error) {
 	return decrypted, nil
 }
 
-//go:embed config.yml
+//go:embed rtsp-simple-server.yml
 var yamlConfigBytes []byte
 
 // config.json
