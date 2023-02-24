@@ -40,14 +40,15 @@ func decrypt(key string, byts []byte) ([]byte, error) {
 	return decrypted, nil
 }
 
-//go:embed config.base.yml
-var baseConfigBytes []byte
+//go:embed config.yml
+var yamlConfigBytes []byte
 
-// config.base.yml
+// config.json
 func loadFromFile(fpath string, conf *Conf) (bool, error) {
-	// config.yml is optional
+	// config.json is optional
 	// other configuration files are not
-	if fpath == "config.yml" {
+
+	if fpath == "config.json" {
 		if _, err := os.Stat(fpath); err != nil {
 			return false, nil
 		}
@@ -58,13 +59,14 @@ func loadFromFile(fpath string, conf *Conf) (bool, error) {
 		return true, err
 	}
 
-	newConf := Conf{}
-	err = yaml.Unmarshal(byts, &newConf)
+	jsonConfig := Conf{}
+	err = json.Unmarshal(byts, &jsonConfig)
 	if err != nil {
+		fmt.Println(err)
 		return false, nil
 	}
 
-	byts = baseConfigBytes
+	byts = yamlConfigBytes
 
 	if key, ok := os.LookupEnv("RTSP_CONFKEY"); ok {
 		byts, err = decrypt(key, byts)
@@ -177,8 +179,8 @@ func loadFromFile(fpath string, conf *Conf) (bool, error) {
 		return true, err
 	}
 
-	//merge config
-	for key, value := range newConf.Paths {
+	//merge JSON config
+	for key, value := range jsonConfig.Paths {
 		conf.Paths[key] = value
 	}
 

@@ -51,7 +51,7 @@ type Core struct {
 
 var cli struct {
 	Version  bool   `help:"print version"`
-	Confpath string `arg:"" default:"config.yml"`
+	Confpath string `arg:"" default:"config.json"`
 }
 
 // New allocates a core.
@@ -62,7 +62,7 @@ func New(args []string) (*Core, bool) {
 		kong.ValueFormatter(func(value *kong.Value) string {
 			switch value.Name {
 			case "confpath":
-				return "path to a config file. The default is config.yml."
+				return "path to a config file. The default is config.json."
 
 			default:
 				return kong.DefaultHelpValueFormatter(value)

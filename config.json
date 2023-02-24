@@ -1,0 +1,12 @@
+{
+  "paths": {
+    "test1": {
+      "runOnDemand": "gst-launch-1.0 videotestsrc is-live=true ! video/x-raw,width=320,height=420,framerate=30/1 ! openh264enc gop-size=20 ! video/x-h264,stream-format=byte-stream,profile=baseline ! rtspclientsink location=rtsp://127.0.0.1:8554/test1",
+      "runOnDemandRestart": true
+    },
+    "test2": {
+      "runOnDemand": "gst-launch-1.0 videotestsrc is-live=true ! video/x-raw,width=640,height=480,framerate=30/1 ! openh264enc gop-size=20 ! video/x-h264,stream-format=byte-stream,profile=baseline ! rtspclientsink location=rtsp://127.0.0.1:8554/test2",
+      "runOnDemandRestart": true
+    }
+  }
+}
